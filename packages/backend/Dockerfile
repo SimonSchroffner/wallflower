@@ -47,12 +47,14 @@ COPY packages/backend/package.json ./packages/backend/
 # Install production dependencies only
 RUN pnpm install --frozen-lockfile --prod
 
-# Copy built files
-COPY --from=base /app/packages/shared/dist ./packages/shared/dist
+# Copy built files and source
+COPY --from=base /app/packages/shared/src ./packages/shared/src
 COPY --from=base /app/packages/backend/dist ./packages/backend/dist
 COPY --from=base /app/packages/backend/prisma ./packages/backend/prisma
-COPY --from=base /app/node_modules/.pnpm ./node_modules/.pnpm
-COPY --from=base /app/node_modules/@prisma ./node_modules/@prisma
+
+# Generate Prisma client in production
+WORKDIR /app/packages/backend
+RUN pnpm prisma generate
 
 WORKDIR /app/packages/backend
 
@@ -64,4 +66,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3001/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1) })"
 
 # Run migrations and start server
-CMD ["sh", "-c", "pnpm prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
