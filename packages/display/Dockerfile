@@ -30,11 +30,7 @@ COPY packages/shared ./packages/shared
 COPY packages/display ./packages/display
 COPY tsconfig.json ./
 
-# Build shared package first
-WORKDIR /app/packages/shared
-RUN pnpm build
-
-# Build display
+# Build display (Vite handles TypeScript)
 WORKDIR /app/packages/display
 RUN pnpm build
 
