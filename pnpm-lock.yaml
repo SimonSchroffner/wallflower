@@ -15,7 +15,7 @@ importers:
   packages/backend:
     dependencies:
       '@prisma/client':
-        specifier: ^5.20.0
+        specifier: 5.22.0
         version: 5.22.0(prisma@5.22.0)
       '@wallflower/shared':
         specifier: workspace:*
@@ -43,7 +43,7 @@ importers:
         specifier: ^20.10.0
         version: 20.19.33
       prisma:
-        specifier: ^5.20.0
+        specifier: 5.22.0
         version: 5.22.0
       tsx:
         specifier: ^4.7.0
