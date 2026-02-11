@@ -54,9 +54,7 @@ COPY --from=base /app/packages/backend/prisma ./packages/backend/prisma
 
 # Generate Prisma client in production
 WORKDIR /app/packages/backend
-RUN pnpm prisma generate
-
-WORKDIR /app/packages/backend
+RUN npx prisma generate
 
 # Expose port
 EXPOSE 3001
