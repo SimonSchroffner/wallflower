@@ -1,0 +1,22 @@
+{
+  "name": "wallflower",
+  "version": "1.0.0",
+  "description": "Interactive Virtual Garden - Art Installation",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter \"./packages/**\" --parallel dev",
+    "build": "pnpm --filter \"./packages/**\" build",
+    "backend:dev": "pnpm --filter backend dev",
+    "display:dev": "pnpm --filter display dev",
+    "mobile:dev": "pnpm --filter mobile dev",
+    "db:migrate": "pnpm --filter backend db:migrate",
+    "db:studio": "pnpm --filter backend db:studio"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,29 @@
+// Prisma schema for PostgreSQL database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Flower {
+  id         String   @id @default(uuid())
+  flowerType String   // 'rose' | 'tulip' | 'daisy' | 'sunflower' | 'lily' | 'poppy'
+  colorR     Int      // RGB values 0-255
+  colorG     Int
+  colorB     Int
+  leaves     String   // 'simple' | 'compound' | 'minimal'
+  petalCount Int      // 5-12 customizable
+  positionX  Float    // Garden placement coordinates
+  positionY  Float
+  rotation   Float    // Random rotation for variety
+  scale      Float    // 0.8-1.2 for size variety
+  plantedAt  DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@index([plantedAt])
+  @@map("flowers")
+}
