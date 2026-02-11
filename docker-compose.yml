@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: wallflower-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: wallflower
+      POSTGRES_USER: wallflower
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-wallflower_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - wallflower-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wallflower"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API Server
+  backend:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    container_name: wallflower-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://wallflower:${DB_PASSWORD:-wallflower_secret}@db:5432/wallflower?schema=public
+      PORT: 3001
+      HOST: 0.0.0.0
+      NODE_ENV: production
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173,http://localhost:5174}
+      MAX_FLOWERS: ${MAX_FLOWERS:-10000}
+      PLACEMENT_MIN_DISTANCE: ${PLACEMENT_MIN_DISTANCE:-30}
+    ports:
+      - "3001:3001"
+    networks:
+      - wallflower-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Display Frontend
+  display:
+    build:
+      context: .
+      dockerfile: packages/display/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-ws://localhost:3001}
+        VITE_MOBILE_URL: ${VITE_MOBILE_URL:-http://localhost:5174}
+    container_name: wallflower-display
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - wallflower-network
+
+  # Mobile Frontend
+  mobile:
+    build:
+      context: .
+      dockerfile: packages/mobile/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-ws://localhost:3001}
+    container_name: wallflower-mobile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5174:80"
+    networks:
+      - wallflower-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  wallflower-network:
+    driver: bridge

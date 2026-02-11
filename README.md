@@ -39,11 +39,34 @@ wallflower/
 
 ## Getting Started
 
+### Choose Your Deployment Method
+
+**🐳 Option 1: Docker (Recommended - Easiest)**
+
+Quick deployment with everything included:
+
+```bash
+# 1. Configure environment
+cp .env.docker .env
+# Edit .env with your IP/domain
+
+# 2. Deploy with one command
+./scripts/docker-deploy.sh
+
+# Or manually:
+docker-compose up -d
+```
+
+See [Docker Deployment Guide](docs/DOCKER_DEPLOYMENT.md) for details.
+
+**💻 Option 2: Local Development**
+
 ### Prerequisites
 
 - Node.js 20+
 - pnpm 8+
 - PostgreSQL 15+ (local or cloud instance)
+- Docker (for Option 1)
 
 ### Installation
 
