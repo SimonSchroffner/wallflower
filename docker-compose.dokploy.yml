@@ -1,0 +1,109 @@
+version: '3.8'
+
+# Dokploy-optimized Docker Compose
+# Uses external database volume and exposes ports appropriately
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: wallflower
+      POSTGRES_USER: wallflower
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - wallflower_db:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wallflower"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API Server
+  backend:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://wallflower:${DB_PASSWORD}@db:5432/wallflower?schema=public
+      PORT: 3001
+      HOST: 0.0.0.0
+      NODE_ENV: production
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      MAX_FLOWERS: ${MAX_FLOWERS:-10000}
+      PLACEMENT_MIN_DISTANCE: ${PLACEMENT_MIN_DISTANCE:-30}
+    ports:
+      - "3001:3001"
+    networks:
+      - internal
+      - web
+    labels:
+      - "dokploy.enable=true"
+      - "dokploy.service=backend"
+      - "dokploy.port=3001"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Display Frontend
+  display:
+    build:
+      context: .
+      dockerfile: packages/display/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_MOBILE_URL: ${VITE_MOBILE_URL}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - web
+    labels:
+      - "dokploy.enable=true"
+      - "dokploy.service=display"
+      - "dokploy.port=80"
+      - "dokploy.domain=${DISPLAY_DOMAIN:-display.wallflower.app}"
+      - "dokploy.ssl=true"
+
+  # Mobile Frontend
+  mobile:
+    build:
+      context: .
+      dockerfile: packages/mobile/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5174:80"
+    networks:
+      - web
+    labels:
+      - "dokploy.enable=true"
+      - "dokploy.service=mobile"
+      - "dokploy.port=80"
+      - "dokploy.domain=${MOBILE_DOMAIN:-customize.wallflower.app}"
+      - "dokploy.ssl=true"
+
+volumes:
+  wallflower_db:
+    driver: local
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    driver: bridge

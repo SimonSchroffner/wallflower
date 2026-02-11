@@ -1,0 +1,40 @@
+{
+  "name": "wallflower",
+  "description": "Interactive Virtual Garden - Art Installation",
+  "type": "docker-compose",
+  "config": {
+    "composeFile": "docker-compose.yml",
+    "buildContext": "."
+  },
+  "services": {
+    "db": {
+      "type": "database",
+      "persistent": true,
+      "healthCheck": true
+    },
+    "backend": {
+      "type": "api",
+      "port": 3001,
+      "healthCheck": "/health",
+      "dependencies": ["db"]
+    },
+    "display": {
+      "type": "web",
+      "port": 5173,
+      "domains": ["display.wallflower.app"]
+    },
+    "mobile": {
+      "type": "web",
+      "port": 5174,
+      "domains": ["customize.wallflower.app"]
+    }
+  },
+  "env": {
+    "required": [
+      "DB_PASSWORD",
+      "CORS_ORIGIN",
+      "VITE_BACKEND_URL",
+      "VITE_MOBILE_URL"
+    ]
+  }
+}
