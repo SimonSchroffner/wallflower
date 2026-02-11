@@ -34,17 +34,19 @@ COPY tsconfig.json ./
 WORKDIR /app/packages/display
 RUN pnpm build
 
-# Production stage with nginx
-FROM nginx:alpine AS production
+# Production stage - serve static files
+FROM node:20-alpine AS production
 
-# Copy built files to nginx
-COPY --from=build /app/packages/display/dist /usr/share/nginx/html
+# Install serve for static file serving
+RUN npm install -g serve
 
-# Copy nginx configuration
-COPY packages/display/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
+
+# Copy built files
+COPY --from=build /app/packages/display/dist ./dist
 
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Serve static files
+CMD ["serve", "-s", "dist", "-l", "3000"]

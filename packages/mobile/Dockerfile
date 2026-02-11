@@ -32,17 +32,19 @@ COPY tsconfig.json ./
 WORKDIR /app/packages/mobile
 RUN pnpm build
 
-# Production stage with nginx
-FROM nginx:alpine AS production
+# Production stage - serve static files
+FROM node:20-alpine AS production
 
-# Copy built files to nginx
-COPY --from=build /app/packages/mobile/dist /usr/share/nginx/html
+# Install serve for static file serving
+RUN npm install -g serve
 
-# Copy nginx configuration
-COPY packages/mobile/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
+
+# Copy built files
+COPY --from=build /app/packages/mobile/dist ./dist
 
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Serve static files
+CMD ["serve", "-s", "dist", "-l", "3000"]

@@ -1,6 +1,9 @@
 # Backend Dockerfile
 FROM node:20-alpine AS base
 
+# Install OpenSSL and other required dependencies for Prisma
+RUN apk add --no-cache openssl libc6-compat
+
 # Install pnpm
 RUN npm install -g pnpm
 
@@ -33,6 +36,9 @@ RUN pnpm build
 
 # Production stage
 FROM node:20-alpine AS production
+
+# Install OpenSSL and other required dependencies for Prisma
+RUN apk add --no-cache openssl libc6-compat
 
 # Install pnpm
 RUN npm install -g pnpm
