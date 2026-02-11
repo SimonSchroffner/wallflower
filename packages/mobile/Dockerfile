@@ -28,7 +28,11 @@ COPY packages/shared ./packages/shared
 COPY packages/mobile ./packages/mobile
 COPY tsconfig.json ./
 
-# Build mobile (shared package uses source directly)
+# Build shared package first
+WORKDIR /app/packages/shared
+RUN pnpm build
+
+# Build mobile
 WORKDIR /app/packages/mobile
 RUN pnpm build
 

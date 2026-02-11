@@ -30,7 +30,11 @@ COPY packages/shared ./packages/shared
 COPY packages/display ./packages/display
 COPY tsconfig.json ./
 
-# Build display (shared package uses source directly)
+# Build shared package first
+WORKDIR /app/packages/shared
+RUN pnpm build
+
+# Build display
 WORKDIR /app/packages/display
 RUN pnpm build
 
