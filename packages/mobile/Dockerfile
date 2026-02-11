@@ -28,7 +28,7 @@ COPY packages/shared ./packages/shared
 COPY packages/mobile ./packages/mobile
 COPY tsconfig.json ./
 
-# Build mobile (shared package uses source directly)
+# Build mobile (Vite handles TypeScript)
 WORKDIR /app/packages/mobile
 RUN pnpm build
 
