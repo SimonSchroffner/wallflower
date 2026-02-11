@@ -5,12 +5,10 @@
 export class RateLimiter {
   private clientLastRequest: Map<string, number>;
   private windowMs: number;
-  private maxRequests: number;
 
-  constructor(windowMs: number = 5000, maxRequests: number = 1) {
+  constructor(windowMs: number = 5000, _maxRequests: number = 1) {
     this.clientLastRequest = new Map();
     this.windowMs = windowMs;
-    this.maxRequests = maxRequests;
   }
 
   /**

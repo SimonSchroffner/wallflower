@@ -18,7 +18,7 @@ export class ParticleSystem extends Container {
   /**
    * Emit particles at a position
    */
-  emit(x: number, y: number, count: number = 15): void {
+  emitParticles(x: number, y: number, count: number = 15): void {
     for (let i = 0; i < count; i++) {
       const angle = (Math.random() * Math.PI * 2);
       const speed = 1 + Math.random() * 2;

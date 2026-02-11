@@ -2,7 +2,6 @@
  * Petal count adjustment step
  */
 
-import { motion } from 'framer-motion';
 import { PETAL_COUNT_RANGE } from '@wallflower/shared';
 
 interface Props {

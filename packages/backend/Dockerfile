@@ -22,11 +22,7 @@ COPY packages/shared ./packages/shared
 COPY packages/backend ./packages/backend
 COPY tsconfig.json ./
 
-# Build shared package
-WORKDIR /app/packages/shared
-RUN pnpm build || true
-
-# Build backend
+# Build backend (shared package uses source directly)
 WORKDIR /app/packages/backend
 
 # Generate Prisma client

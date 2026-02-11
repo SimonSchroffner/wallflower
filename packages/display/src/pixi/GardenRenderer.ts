@@ -84,19 +84,23 @@ export class GardenRenderer {
     const deltaTime = ticker.deltaMS;
 
     // Update flowers
-    this.flowerLayer.update(deltaTime);
+    if (this.flowerLayer) {
+      this.flowerLayer.update(deltaTime);
+    }
 
     // Update particles
-    this.particleLayer.update(deltaTime);
+    if (this.particleLayer) {
+      this.particleLayer.update(deltaTime);
+    }
   }
 
   /**
    * Add a flower to the garden
    */
   addFlower(data: FlowerData): void {
-    if (!this.flowerLayer) return;
+    if (!this.flowerLayer || !this.particleLayer) return;
 
-    const flower = this.flowerLayer.addFlower(data);
+    this.flowerLayer.addFlower(data);
 
     // Emit particles at flower position
     this.particleLayer.emitAt(data.position.x, data.position.y, 15);
@@ -108,8 +112,8 @@ export class GardenRenderer {
   loadFlowers(flowers: FlowerData[]): void {
     if (!this.flowerLayer) return;
 
-    for (const flower of flowers) {
-      this.flowerLayer.addFlower(flower);
+    for (const flowerData of flowers) {
+      this.flowerLayer.addFlower(flowerData);
     }
 
     console.log(`✓ Loaded ${flowers.length} flowers`);

@@ -21,12 +21,12 @@
     "display": {
       "type": "web",
       "port": 5173,
-      "domains": ["display.wallflower.app"]
+      "domains": ["wallflower.wasmachen.jetzt"]
     },
     "mobile": {
       "type": "web",
       "port": 5174,
-      "domains": ["customize.wallflower.app"]
+      "domains": ["plant.wasmachen.jetzt"]
     }
   },
   "env": {

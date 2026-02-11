@@ -3,7 +3,7 @@
  * Creates dynamic flower textures based on type and customization
  */
 
-import { Texture, Graphics } from 'pixi.js';
+import { Graphics } from 'pixi.js';
 import type { FlowerType, FlowerColor } from '@wallflower/shared';
 
 export class TextureManager {
@@ -143,7 +143,7 @@ export class TextureManager {
   /**
    * Draw a sunflower with triangular petals and large center
    */
-  private drawSunflower(graphics: Graphics, color: number, petalCount: number): void {
+  private drawSunflower(graphics: Graphics, _color: number, petalCount: number): void {
     const size = 35;
     const adjustedPetals = Math.max(10, petalCount); // Sunflowers have many petals
 

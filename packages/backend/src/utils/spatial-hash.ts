@@ -2,7 +2,7 @@
  * Spatial hash grid for efficient collision detection
  */
 
-import type { FlowerPosition, SpatialGrid } from '@wallflower/shared';
+import type { FlowerPosition } from '@wallflower/shared';
 
 export class SpatialHash {
   private cellSize: number;

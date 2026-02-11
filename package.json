@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter \"./packages/**\" --parallel dev",
-    "build": "pnpm --filter \"./packages/**\" build",
+    "build": "pnpm --filter shared build && pnpm --filter backend build && pnpm --filter display build && pnpm --filter mobile build",
+    "build:parallel": "pnpm --filter \"./packages/**\" build",
     "backend:dev": "pnpm --filter backend dev",
     "display:dev": "pnpm --filter display dev",
     "mobile:dev": "pnpm --filter mobile dev",

@@ -19,7 +19,7 @@ export class ParticleLayer extends Container {
    * Emit particles at a position
    */
   emitAt(x: number, y: number, count?: number): void {
-    this.particleSystem.emit(x, y, count);
+    this.particleSystem.emitParticles(x, y, count);
   }
 
   /**
