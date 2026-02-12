@@ -68,6 +68,7 @@ See [Docker Deployment Guide](docs/DOCKER_DEPLOYMENT.md) for details.
 - PostgreSQL 15+ (local or cloud instance)
 - Docker (for Option 1)
 
+
 ### Installation
 
 1. **Clone and install dependencies:**
