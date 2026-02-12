@@ -20,12 +20,12 @@
     },
     "display": {
       "type": "web",
-      "port": 3000,
+      "port": 5173,
       "domains": ["wallflower.wasmachen.jetzt"]
     },
     "mobile": {
       "type": "web",
-      "port": 3000,
+      "port": 5174,
       "domains": ["plant.wasmachen.jetzt"]
     }
   },
