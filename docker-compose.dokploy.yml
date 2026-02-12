@@ -74,7 +74,7 @@ services:
       - "dokploy.enable=true"
       - "dokploy.service=display"
       - "dokploy.port=3000"
-      - "dokploy.domain=${DISPLAY_DOMAIN:-display.wallflower.app}"
+      - "dokploy.domain=${DISPLAY_DOMAIN:-wallflower.wasmachen.jetzt}"
       - "dokploy.ssl=true"
 
   # Mobile Frontend
@@ -95,7 +95,7 @@ services:
       - "dokploy.enable=true"
       - "dokploy.service=mobile"
       - "dokploy.port=3000"
-      - "dokploy.domain=${MOBILE_DOMAIN:-customize.wallflower.app}"
+      - "dokploy.domain=${MOBILE_DOMAIN:-plant.wasmachen.jetzt}"
       - "dokploy.ssl=true"
 
 volumes:
