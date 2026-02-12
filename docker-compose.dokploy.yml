@@ -39,8 +39,8 @@ services:
       CORS_ORIGIN: ${CORS_ORIGIN}
       MAX_FLOWERS: ${MAX_FLOWERS:-10000}
       PLACEMENT_MIN_DISTANCE: ${PLACEMENT_MIN_DISTANCE:-30}
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     networks:
       - internal
       - web
@@ -66,8 +66,8 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    ports:
-      - "5173:3000"
+    expose:
+      - "3000"
     networks:
       - web
     labels:
@@ -87,8 +87,8 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    ports:
-      - "5174:3000"
+    expose:
+      - "3000"
     networks:
       - web
     labels:

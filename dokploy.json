@@ -3,7 +3,7 @@
   "description": "Interactive Virtual Garden - Art Installation",
   "type": "docker-compose",
   "config": {
-    "composeFile": "docker-compose.yml",
+    "composeFile": "docker-compose.dokploy.yml",
     "buildContext": "."
   },
   "services": {
@@ -20,12 +20,12 @@
     },
     "display": {
       "type": "web",
-      "port": 5173,
+      "port": 3000,
       "domains": ["wallflower.wasmachen.jetzt"]
     },
     "mobile": {
       "type": "web",
-      "port": 5174,
+      "port": 3000,
       "domains": ["plant.wasmachen.jetzt"]
     }
   },
