@@ -67,7 +67,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:3000"
+      - "5173:3000"
     networks:
       - web
     labels:
@@ -88,7 +88,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:3000"
+      - "5174:3000"
     networks:
       - web
     labels:
